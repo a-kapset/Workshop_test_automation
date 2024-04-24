@@ -1,0 +1,1 @@
+The repository is for workshop "Build test automation from scratch with Java"
