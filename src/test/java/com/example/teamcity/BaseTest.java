@@ -5,15 +5,15 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 
 public class BaseTest {
-    public SoftAssertions softy;
+    protected SoftAssertions softy;
 
     @BeforeMethod
-    public void beforeTest() {
+    protected void beforeTest() {
         softy = new SoftAssertions();
     }
 
     @AfterMethod
-    public void afterTest() {
+    protected void afterTest() {
         softy.assertAll();
     }
 }

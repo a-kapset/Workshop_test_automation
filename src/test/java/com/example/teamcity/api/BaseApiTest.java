@@ -7,15 +7,15 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 
 public class BaseApiTest extends BaseTest {
-    public TestData testData;
+    protected TestData testData;
 
     @BeforeMethod
-    public void setupTest() {
+    protected void setupTest() {
         testData = new TestDataGenerator().generate();
     }
 
     @AfterMethod
-    public void cleanTest() {
+    protected void cleanTest() {
         testData.delete();
     }
 }
