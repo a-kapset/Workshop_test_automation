@@ -31,6 +31,7 @@ public class Specifications {
         requestBuilder.addFilter(new ResponseLoggingFilter());
         requestBuilder.setContentType(ContentType.JSON);
         requestBuilder.setAccept(ContentType.JSON);
+
         return requestBuilder;
     }
 
@@ -44,6 +45,17 @@ public class Specifications {
                 + user.getUsername()
                 + ":"
                 + user.getPassword()
+                + "@"
+                + Config.getProperty("host")
+        );
+
+        return requestBuilder.build();
+    }
+
+    public RequestSpecification superUserSpec() {
+        var requestBuilder = reqBuilder();
+        requestBuilder.setBaseUri("http://:"
+                + Config.getProperty("superUserToken")
                 + "@"
                 + Config.getProperty("host")
         );

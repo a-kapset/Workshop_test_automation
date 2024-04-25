@@ -1,37 +1,32 @@
 package com.example.teamcity.api.requests.checked;
 
-import com.example.teamcity.api.models.Project;
+import com.example.teamcity.api.models.User;
 import com.example.teamcity.api.requests.CrudInterface;
-import com.example.teamcity.api.requests.unchecked.ProjectUncheckedRequest;
+import com.example.teamcity.api.requests.unchecked.UserUncheckedRequest;
 import io.restassured.specification.RequestSpecification;
 import org.apache.http.HttpStatus;
 
-public class ProjectCheckedRequest implements CrudInterface {
+public class UserCheckedRequest implements CrudInterface {
     private final RequestSpecification spec;
 
-    public ProjectCheckedRequest(RequestSpecification spec) {
+    public UserCheckedRequest(RequestSpecification spec) {
         this.spec = spec;
     }
 
     @Override
-    public Project create(Object obj) {
-        return new ProjectUncheckedRequest(this.spec)
+    public User create(Object obj) {
+        return new UserUncheckedRequest(spec)
                 .create(obj)
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.SC_OK)
                 .extract()
-                .as(Project.class);
+                .as(User.class);
     }
 
     @Override
-    public Project get(String id) {
-        return new ProjectUncheckedRequest(spec)
-                .get(id)
-                .then()
-                .assertThat()
-                .statusCode(HttpStatus.SC_OK)
-                .extract().as(Project.class);
+    public Object get(String id) {
+        return null;
     }
 
     @Override
@@ -41,11 +36,11 @@ public class ProjectCheckedRequest implements CrudInterface {
 
     @Override
     public String delete(String id) {
-        return new ProjectUncheckedRequest(this.spec)
+        return new UserUncheckedRequest(spec)
                 .delete(id)
                 .then()
                 .assertThat()
-                .statusCode(HttpStatus.SC_OK)
+                .statusCode(HttpStatus.SC_NO_CONTENT)
                 .extract()
                 .asString();
     }

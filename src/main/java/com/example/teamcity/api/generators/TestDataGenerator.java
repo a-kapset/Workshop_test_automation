@@ -1,15 +1,22 @@
 package com.example.teamcity.api.generators;
 
-import com.example.teamcity.api.models.NewProjectDescription;
-import com.example.teamcity.api.models.Project;
-import com.example.teamcity.api.models.User;
+import com.example.teamcity.api.models.*;
+
+import java.util.Arrays;
 
 public class TestDataGenerator {
 
     public TestData generate() {
         var user = User.builder() // builder comes from lombok annotation
-                .username("admin")
-                .password("admin")
+                .username(RandomData.getStringWithPrefix("uname"))
+                .password(RandomData.getStringWithPrefix("upass"))
+                .email(RandomData.getString() + "@test.net")
+                .roles(Roles.builder()
+                        .role(Arrays.asList(Role.builder()
+                                .roleId("SYSTEM_ADMIN")
+                                .scope("g")
+                                .build()))
+                        .build())
                 .build();
 
         var newProjectDescription = NewProjectDescription.builder()

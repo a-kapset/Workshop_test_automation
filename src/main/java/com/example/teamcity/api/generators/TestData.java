@@ -3,6 +3,8 @@ package com.example.teamcity.api.generators;
 import com.example.teamcity.api.models.NewProjectDescription;
 import com.example.teamcity.api.models.User;
 import com.example.teamcity.api.requests.unchecked.ProjectUncheckedRequest;
+import com.example.teamcity.api.requests.unchecked.UserUncheckedRequest;
+import com.example.teamcity.api.spec.Specifications;
 import lombok.Builder;
 import lombok.Data;
 
@@ -13,6 +15,8 @@ public class TestData {
     private NewProjectDescription newProjectDescription;
 
     public void delete() {
-        new ProjectUncheckedRequest(this.user).delete(newProjectDescription.getId());
+        var spec = Specifications.getSpec().authSpec(user); // TODO: consider to use super admin spec here
+        new ProjectUncheckedRequest(spec).delete(newProjectDescription.getId());
+        new UserUncheckedRequest(spec).delete(user.getUsername());
     }
 }
