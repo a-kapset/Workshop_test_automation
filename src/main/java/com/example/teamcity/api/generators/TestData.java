@@ -17,7 +17,9 @@ public class TestData {
     private BuildType buildType;
 
     public void delete() {
-        var spec = Specifications.getSpec().authSpec(user); // TODO: consider to use super admin spec here
+        var spec = Specifications.getSpec().superUserSpec();
+
+        // TODO - consider to use checked requests to see errors in delete requests if they occur
         new ProjectUncheckedRequest(spec).delete(newProjectDescription.getId());
         new UserUncheckedRequest(spec).delete(user.getUsername());
     }
