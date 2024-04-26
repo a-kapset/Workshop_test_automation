@@ -31,6 +31,7 @@ public class Specifications {
         requestBuilder.addFilter(new ResponseLoggingFilter());
         requestBuilder.setContentType(ContentType.JSON);
         requestBuilder.setAccept(ContentType.JSON);
+        requestBuilder.setBaseUri("http://" + Config.getProperty("host"));
 
         return requestBuilder;
     }

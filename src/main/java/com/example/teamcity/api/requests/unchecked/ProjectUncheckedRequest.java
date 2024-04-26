@@ -1,16 +1,16 @@
 package com.example.teamcity.api.requests.unchecked;
 
 import com.example.teamcity.api.requests.CrudInterface;
+import com.example.teamcity.api.requests.Request;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 
-public class ProjectUncheckedRequest implements CrudInterface {
+public class ProjectUncheckedRequest extends Request implements CrudInterface {
     private static final String PROJECT_ENDPOINT = "/app/rest/projects";
-    private RequestSpecification spec;
 
     public ProjectUncheckedRequest(RequestSpecification spec) {
-        this.spec = spec;
+        super(spec);
     }
 
     @Override

@@ -6,13 +6,12 @@ import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 
-public class UserUncheckedRequest extends Request implements CrudInterface {
-    private final static String USER_ENDPOINT = "/app/rest/users";
+public class BuildConfigUncheckedRequest extends Request implements CrudInterface {
+    private static final String BUILD_CONFIG_ENDPOINT = "/app/rest/buildTypes";
 
-    public UserUncheckedRequest(RequestSpecification spec) {
+    public BuildConfigUncheckedRequest(RequestSpecification spec) {
         super(spec);
     }
-
 
     @Override
     public Response create(Object obj) {
@@ -20,7 +19,7 @@ public class UserUncheckedRequest extends Request implements CrudInterface {
                 .given()
                 .spec(spec)
                 .body(obj)
-                .post(USER_ENDPOINT);
+                .post(BUILD_CONFIG_ENDPOINT);
     }
 
     @Override
@@ -38,6 +37,6 @@ public class UserUncheckedRequest extends Request implements CrudInterface {
         return RestAssured
                 .given()
                 .spec(spec)
-                .delete(USER_ENDPOINT + "/username:" + id);
+                .delete(BUILD_CONFIG_ENDPOINT + "/id:" + id);
     }
 }

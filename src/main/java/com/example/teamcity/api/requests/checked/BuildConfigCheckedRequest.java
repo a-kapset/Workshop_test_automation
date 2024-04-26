@@ -1,27 +1,27 @@
 package com.example.teamcity.api.requests.checked;
 
-import com.example.teamcity.api.models.User;
+import com.example.teamcity.api.models.BuildType;
 import com.example.teamcity.api.requests.CrudInterface;
 import com.example.teamcity.api.requests.Request;
-import com.example.teamcity.api.requests.unchecked.UserUncheckedRequest;
+import com.example.teamcity.api.requests.unchecked.BuildConfigUncheckedRequest;
 import io.restassured.specification.RequestSpecification;
 import org.apache.http.HttpStatus;
 
-public class UserCheckedRequest extends Request implements CrudInterface {
+public class BuildConfigCheckedRequest extends Request implements CrudInterface {
 
-    public UserCheckedRequest(RequestSpecification spec) {
+    public BuildConfigCheckedRequest(RequestSpecification spec) {
         super(spec);
     }
 
     @Override
-    public User create(Object obj) {
-        return new UserUncheckedRequest(spec)
+    public BuildType create(Object obj) {
+        return new BuildConfigUncheckedRequest(spec)
                 .create(obj)
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.SC_OK)
                 .extract()
-                .as(User.class);
+                .as(BuildType.class);
     }
 
     @Override
@@ -36,7 +36,7 @@ public class UserCheckedRequest extends Request implements CrudInterface {
 
     @Override
     public String delete(String id) {
-        return new UserUncheckedRequest(spec)
+        return new BuildConfigUncheckedRequest(spec)
                 .delete(id)
                 .then()
                 .assertThat()

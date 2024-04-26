@@ -1,5 +1,6 @@
 package com.example.teamcity.api.generators;
 
+import com.example.teamcity.api.models.BuildType;
 import com.example.teamcity.api.models.NewProjectDescription;
 import com.example.teamcity.api.models.User;
 import com.example.teamcity.api.requests.unchecked.ProjectUncheckedRequest;
@@ -13,6 +14,7 @@ import lombok.Data;
 public class TestData {
     private User user;
     private NewProjectDescription newProjectDescription;
+    private BuildType buildType;
 
     public void delete() {
         var spec = Specifications.getSpec().authSpec(user); // TODO: consider to use super admin spec here

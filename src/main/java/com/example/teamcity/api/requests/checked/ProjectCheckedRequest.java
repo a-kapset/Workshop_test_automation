@@ -2,15 +2,15 @@ package com.example.teamcity.api.requests.checked;
 
 import com.example.teamcity.api.models.Project;
 import com.example.teamcity.api.requests.CrudInterface;
+import com.example.teamcity.api.requests.Request;
 import com.example.teamcity.api.requests.unchecked.ProjectUncheckedRequest;
 import io.restassured.specification.RequestSpecification;
 import org.apache.http.HttpStatus;
 
-public class ProjectCheckedRequest implements CrudInterface {
-    private final RequestSpecification spec;
+public class ProjectCheckedRequest extends Request implements CrudInterface {
 
     public ProjectCheckedRequest(RequestSpecification spec) {
-        this.spec = spec;
+        super(spec);
     }
 
     @Override
