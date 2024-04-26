@@ -79,9 +79,13 @@ public class RolesTest extends BaseApiTest{
         chRequestsWithSuperUser.getUserRequest().create(firstTestData.getUser());
         chRequestsWithSuperUser.getUserRequest().create(secondTestData.getUser());
 
-        // try to create a build config as first project admin for second project
+        // try to create a build config as first project admin for second project (it's forbidden)
         new UncheckedRequests(Specifications.getSpec().authSpec(firstTestData.getUser()))
                 .getBuildConfigRequest()
-                .create(secondTestData.getBuildType());
+                .create(secondTestData.getBuildType())
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.SC_FORBIDDEN)
+                .body(Matchers.containsString("You do not have enough permissions to edit project with id: " + secondTestData.getNewProjectDescription().getId()));
     }
 }
