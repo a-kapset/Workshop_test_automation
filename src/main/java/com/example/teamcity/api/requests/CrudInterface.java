@@ -1,8 +1,8 @@
 package com.example.teamcity.api.requests;
 
-public interface CrudInterface {
-    public Object create(Object obj);
-    public Object get(String id);
-    public Object update(Object obj);
-    public Object delete(String id);
+public interface CrudInterface<T> {
+    Object create(T obj);
+    Object get(String id);
+    Object update(T obj);
+    Object delete(String id);
 }

@@ -1,5 +1,6 @@
 package com.example.teamcity.api.requests.checked;
 
+import com.example.teamcity.api.models.NewProjectDescription;
 import com.example.teamcity.api.models.Project;
 import com.example.teamcity.api.requests.CrudInterface;
 import com.example.teamcity.api.requests.Request;
@@ -7,14 +8,14 @@ import com.example.teamcity.api.requests.unchecked.ProjectUncheckedRequest;
 import io.restassured.specification.RequestSpecification;
 import org.apache.http.HttpStatus;
 
-public class ProjectCheckedRequest extends Request implements CrudInterface {
+public class ProjectCheckedRequest extends Request implements CrudInterface<NewProjectDescription> {
 
     public ProjectCheckedRequest(RequestSpecification spec) {
         super(spec);
     }
 
     @Override
-    public Project create(Object obj) {
+    public Project create(NewProjectDescription obj) {
         return new ProjectUncheckedRequest(this.spec)
                 .create(obj)
                 .then()
@@ -35,7 +36,7 @@ public class ProjectCheckedRequest extends Request implements CrudInterface {
     }
 
     @Override
-    public Object update(Object obj) {
+    public Object update(NewProjectDescription obj) {
         return null;
     }
 

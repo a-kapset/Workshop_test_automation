@@ -7,14 +7,14 @@ import com.example.teamcity.api.requests.unchecked.UserUncheckedRequest;
 import io.restassured.specification.RequestSpecification;
 import org.apache.http.HttpStatus;
 
-public class UserCheckedRequest extends Request implements CrudInterface {
+public class UserCheckedRequest extends Request implements CrudInterface<User> {
 
     public UserCheckedRequest(RequestSpecification spec) {
         super(spec);
     }
 
     @Override
-    public User create(Object obj) {
+    public User create(User obj) {
         return new UserUncheckedRequest(spec)
                 .create(obj)
                 .then()
@@ -30,7 +30,7 @@ public class UserCheckedRequest extends Request implements CrudInterface {
     }
 
     @Override
-    public Object update(Object obj) {
+    public Object update(User obj) {
         return null;
     }
 

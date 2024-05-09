@@ -7,14 +7,14 @@ import com.example.teamcity.api.requests.unchecked.BuildConfigUncheckedRequest;
 import io.restassured.specification.RequestSpecification;
 import org.apache.http.HttpStatus;
 
-public class BuildConfigCheckedRequest extends Request implements CrudInterface {
+public class BuildConfigCheckedRequest extends Request implements CrudInterface<BuildType> {
 
     public BuildConfigCheckedRequest(RequestSpecification spec) {
         super(spec);
     }
 
     @Override
-    public BuildType create(Object obj) {
+    public BuildType create(BuildType obj) {
         return new BuildConfigUncheckedRequest(spec)
                 .create(obj)
                 .then()
@@ -30,7 +30,7 @@ public class BuildConfigCheckedRequest extends Request implements CrudInterface 
     }
 
     @Override
-    public Object update(Object obj) {
+    public Object update(BuildType obj) {
         return null;
     }
 

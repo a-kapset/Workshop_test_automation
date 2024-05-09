@@ -1,14 +1,19 @@
 package com.example.teamcity.api.generators;
 
+import io.restassured.response.Response;
+import org.apache.http.HttpStatus;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class TestDataStorage {
     private static TestDataStorage testDataStorage;
-    private List<TestData> testDataList;
+    private List<TestData> generatedTestDataList;
+    private List<Runnable> deletionTasks;
 
     private TestDataStorage() {
-        testDataList = new ArrayList<>();
+        generatedTestDataList = new ArrayList<>();
+        deletionTasks = new ArrayList<>();
     }
 
     public static TestDataStorage getStorage() {
@@ -26,12 +31,24 @@ public class TestDataStorage {
     }
 
     public TestData addTestData(TestData testData) {
-        getStorage().testDataList.add(testData);
+        getStorage().generatedTestDataList.add(testData);
         return testData;
     }
 
+    public void addToDeletionTasks(Response response, Runnable run) {
+        if (response.statusCode() == HttpStatus.SC_CREATED || response.statusCode() == HttpStatus.SC_OK) {
+            getStorage().deletionTasks.add(run);
+        };
+    }
+
     public void delete() {
-        testDataList.forEach(TestData::delete);
+        generatedTestDataList.forEach(TestData::delete);
+    }
+
+    public void deleteOnlyCreated() {
+        for (Runnable task : deletionTasks) {
+            task.run();
+        }
     }
 
     // TODO add public method to access testDataList ?

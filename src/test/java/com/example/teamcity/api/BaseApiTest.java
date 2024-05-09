@@ -29,6 +29,6 @@ public class BaseApiTest extends BaseTest {
 
     @AfterMethod
     protected void cleanTest() {
-        testDataStorage.delete();
+        testDataStorage.deleteOnlyCreated();
     }
 }
