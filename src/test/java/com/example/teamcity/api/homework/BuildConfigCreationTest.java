@@ -50,11 +50,11 @@ public class BuildConfigCreationTest extends BaseApiTest {
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.SC_BAD_REQUEST)
-                .body(Matchers.containsString("Build configuration with name \""
-                        + buildConfigName
-                        + "\" already exists in project: \""
-                        + project.getName()
-                        + "\""));
+                .body(Matchers.containsString(String.format(
+                        "Build configuration with name \"%s\" already exists in project: \"%s\"",
+                        buildConfigName,
+                        project.getName()
+                )));
     }
 
     @Test
@@ -85,9 +85,10 @@ public class BuildConfigCreationTest extends BaseApiTest {
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.SC_BAD_REQUEST)
-                .body(Matchers.containsString("The build configuration / template ID \""
-                        + buildConfigId
-                        + "\" is already used by another configuration or template"));
+                .body(Matchers.containsString(String.format(
+                        "The build configuration / template ID \"%s\" is already used by another configuration or template",
+                        buildConfigId
+                )));
     }
 
     @Test
@@ -111,8 +112,10 @@ public class BuildConfigCreationTest extends BaseApiTest {
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.SC_NOT_FOUND)
-                .body(Matchers.containsString("Project cannot be found by external id '" +
-                        testData.getBuildType().getProject().getId() + "'"));
+                .body(Matchers.containsString(String.format(
+                        "Project cannot be found by external id '%s'",
+                        testData.getBuildType().getProject().getId()
+                )));
     }
 
     @Test

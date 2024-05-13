@@ -69,7 +69,9 @@ public class ProjectCreationTest extends BaseApiTest {
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.SC_BAD_REQUEST)
-                .body(Matchers.containsString("Project with this name already exists: " + testData2.getNewProjectDescription().getName()));
+                .body(Matchers.containsString(
+                        String.format("Project with this name already exists: %s", testData2.getNewProjectDescription().getName())
+                ));
     }
 
     @Test
@@ -95,7 +97,9 @@ public class ProjectCreationTest extends BaseApiTest {
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.SC_BAD_REQUEST)
-                .body(Matchers.containsString("Project ID \"" + testData1.getNewProjectDescription().getId() + "\" is already used by another project"));
+                .body(Matchers.containsString(
+                        String.format("Project ID \"%s\" is already used by another project", testData1.getNewProjectDescription().getId())
+                ));
     }
 
     @Test
@@ -140,6 +144,8 @@ public class ProjectCreationTest extends BaseApiTest {
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.SC_NOT_FOUND)
-                .body(Matchers.containsString("No project found by name or internal/external id '" + nonExistingName + "'"));
+                .body(Matchers.containsString(
+                        String.format("No project found by name or internal/external id '%s'", nonExistingName)
+                ));
     }
 }
