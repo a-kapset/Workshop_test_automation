@@ -1,0 +1,30 @@
+Run server:
+docker run --name teamcity-server-instance `
+    -v "C:\LearnProgramming\WorkshopTestAutomation\teamcity_server\datadir:/data/teamcity_server/datadir" `
+    -v "C:\LearnProgramming\WorkshopTestAutomation\teamcity_server\logs:/opt/teamcity/logs" `
+    -p 8111:8111 `
+    jetbrains/teamcity-server
+
+docker run --name teamcity-server-instance `
+    -v "C:\WorkshopTestAutomation\teamcity_server\datadir:/data/teamcity_server/datadir" `
+    -v "C:\WorkshopTestAutomation\teamcity_server\logs:/opt/teamcity/logs" `
+    -p 8111:8111 `
+    jetbrains/teamcity-server
+
+
+Super user authentication token: 4350678991057437123
+
+
+Получить IPv4-адрес для запуска teamcity-agent:
+ipconfig | Select-String -Pattern 'IPv4-адрес' | Select-Object -First 1 | ForEach-Object { ($_ -split ': ')[1] }
+
+
+Run agent:
+docker run --name teamcity-agent-instance -e SERVER_URL="http://192.168.1.2:8111" `-v "C:\LearnProgramming\WorkshopTestAutomation\teamcity_agent\conf:/data/teamcity_agent/conf"` jetbrains/teamcity-agent
+
+docker run --name teamcity-agent5 -e SERVER_URL="http://192.168.1.7:8111" `-v "C:\WorkshopTestAutomation\teamcity_agent\conf:/data/teamcity_agent/conf"` jetbrains/teamcity-agent
+
+repo to create a project:
+https://github.com/AlexPshe/spring-core-for-qa
+
+
