@@ -1,9 +1,12 @@
 package com.example.teamcity.ui.pages.admin;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import com.example.teamcity.ui.Selectors;
 import com.example.teamcity.ui.pages.Page;
+
+import java.time.Duration;
 
 import static com.codeborne.selenide.Selenide.element;
 
@@ -17,6 +20,8 @@ public class CreateNewProjectPage extends Page {
                 parentProjectId +
                 "&showMode=createProjectMenu");
 
+        waitUntilPageIsLoaded();
+
         return this;
     }
 
@@ -28,6 +33,8 @@ public class CreateNewProjectPage extends Page {
     }
 
     public void setupProject(String projectName, String buildTypeName) {
+        projectNameInput.shouldBe(Condition.visible, Duration.ofSeconds(60));
+
         projectNameInput.clear();
         projectNameInput.sendKeys(projectName);
         buildTypeNameInput.clear();
