@@ -16,7 +16,7 @@ import static com.codeborne.selenide.Selenide.element;
 public class CreateBuildConfigPage extends Page {
     private CreateFromUrlForm createFromUrlForm = new CreateFromUrlForm(element(Selectors.byId("createFromUrlForm")));
     private CreateBuildForm createBuildForm = new CreateBuildForm(element(Selectors.byId("createProjectForm")));
-    private CreateBuildManuallyForm createManuallyForm = new CreateBuildManuallyForm(element(Selectors.byId("editProjectForm")));
+    private CreateBuildManuallyForm createManuallyForm = new CreateBuildManuallyForm(element(Selectors.byId("createBuildTypeForm")));
     private SelenideElement createFromUrlButton = element(Selectors.byHref("#createFromUrl"));
     private SelenideElement createManuallyButton = element(Selectors.byHref("#createManually"));
 
@@ -35,17 +35,17 @@ public class CreateBuildConfigPage extends Page {
         return this;
     }
 
-//    public void createBuildManually(String name, String projectId) {
-//        setupManualProject(name, projectId);
-//        submit();
-//    }
+    public void createBuildManually(String name, String buildConfigId) {
+        setupManualBuild(name, buildConfigId);
+        submit();
+    }
 
-//    public void setupManualBuild(String name, String projectId) {
-//        createManuallyButton.shouldBe(Condition.visible, Duration.ofSeconds(5)).click();
-//        createManuallyForm.getNameInput().sendKeys(name);
-//        createManuallyForm.getProjectIdInput().clear();
-//        createManuallyForm.getProjectIdInput().sendKeys(projectId);
-//    }
+    public void setupManualBuild(String name, String buildConfigId) {
+        createManuallyButton.shouldBe(Condition.visible, Duration.ofSeconds(5)).click();
+        createManuallyForm.getBuildConfigNameInput().sendKeys(name);
+        createManuallyForm.getBuildConfigIdInput().clear();
+        createManuallyForm.getBuildConfigIdInput().sendKeys(buildConfigId);
+    }
 
     public void setupUrlBuild(String buildConfigName) {
         createBuildForm.getBuildConfigNameInput().shouldBe(Condition.visible, Duration.ofSeconds(5));

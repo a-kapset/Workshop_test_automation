@@ -5,8 +5,8 @@ import com.example.teamcity.api.requests.CheckedRequests;
 import com.example.teamcity.api.requests.UncheckedRequests;
 import com.example.teamcity.api.spec.Specifications;
 import com.example.teamcity.ui.BaseUiTest;
-import com.example.teamcity.ui.pages.admin.BuildStepsConfigurationPage;
 import com.example.teamcity.ui.pages.admin.CreateBuildConfigPage;
+import com.example.teamcity.ui.pages.admin.VCSrootsConfigurationPage;
 import org.apache.http.HttpStatus;
 import org.testng.annotations.Test;
 
@@ -14,11 +14,10 @@ import java.time.Duration;
 
 import static org.hamcrest.Matchers.equalTo;
 
-public class CreateBuildConfigurationFromRepositoryUrlTest extends BaseUiTest {
-    private static final String TEST_VCS_URL = "https://github.com/AlexPshe/spring-core-for-qa";
+public class CreateBuildConfigurationManuallyTest extends BaseUiTest {
 
     @Test
-    public void newBuildConfigurationCanBeCreated() {
+    public void buildConfigCanBeCreated() {
         var testData = testDataStorage.addTestData();
 
         loginAsAuthorizedUser(testData.getUser());
@@ -29,13 +28,11 @@ public class CreateBuildConfigurationFromRepositoryUrlTest extends BaseUiTest {
 
         new CreateBuildConfigPage()
                 .open(project.getId())
-                .createBuildByUrl(TEST_VCS_URL)
-                .setupUrlBuildAndSubmit(testData.getBuildType().getName());
+                .createBuildManually(testData.getBuildType().getName(), testData.getBuildType().getId());
 
-        new BuildStepsConfigurationPage().getMessageBuildConfigCreated()
+        new VCSrootsConfigurationPage().getMessageBuildConfigCreated()
                 .shouldBe(Condition.visible, Duration.ofSeconds(10))
-                .shouldHave(Condition.partialText(String.format("New build configuration \"%s\"", testData.getBuildType().getName())))
-                .shouldHave(Condition.partialText("have been successfully created"));
+                .shouldHave(Condition.partialText("Build configuration successfully created"));
 
         new UncheckedRequests(Specifications.getSpec().authSpec(testData.getUser()))
                 .getBuildConfigRequest()
@@ -49,7 +46,7 @@ public class CreateBuildConfigurationFromRepositoryUrlTest extends BaseUiTest {
     }
 
     @Test
-    public void newBuildConfigurationCanNotBeCreatedWhenUrlIsEmpty() {
+    public void newBuildConfigCanNotBeCreatedWhenBuildConfigNameIsEmpty() {
         var testData = testDataStorage.addTestData();
 
         loginAsAuthorizedUser(testData.getUser());
@@ -58,13 +55,11 @@ public class CreateBuildConfigurationFromRepositoryUrlTest extends BaseUiTest {
                 .getProjectRequest()
                 .create(testData.getNewProjectDescription());
 
-        new CreateBuildConfigPage()
-                .open(project.getId())
-                .createBuildByUrl("")
-                .getCreateFromUrlForm()
-                .getErrorUrlMessage()
+        var createBuildConfigPage = new CreateBuildConfigPage().open(project.getId());
+        createBuildConfigPage.createBuildManually("", testData.getBuildType().getId());
+        createBuildConfigPage.getCreateManuallyForm().getErrorBuildTypeName()
                 .shouldBe(Condition.visible, Duration.ofSeconds(1))
-                .shouldHave(Condition.text("URL must not be empty"));
+                .shouldHave(Condition.text("Name must not be empty"));
 
         new UncheckedRequests(Specifications.getSpec().authSpec(testData.getUser()))
                 .getBuildConfigRequest()
@@ -75,7 +70,7 @@ public class CreateBuildConfigurationFromRepositoryUrlTest extends BaseUiTest {
     }
 
     @Test
-    public void newBuildConfigurationCanNotBeCreatedWhenNameIsEmpty() {
+    public void newBuildConfigCanNotBeCreatedWhenBuildConfigIdIsEmpty() {
         var testData = testDataStorage.addTestData();
 
         loginAsAuthorizedUser(testData.getUser());
@@ -85,38 +80,10 @@ public class CreateBuildConfigurationFromRepositoryUrlTest extends BaseUiTest {
                 .create(testData.getNewProjectDescription());
 
         var createBuildConfigPage = new CreateBuildConfigPage().open(project.getId());
-        createBuildConfigPage.createBuildByUrl(TEST_VCS_URL);
-        createBuildConfigPage.setupUrlBuildAndSubmit("");
-        createBuildConfigPage.getCreateBuildForm()
-                .getErrorBuildTypeName()
+        createBuildConfigPage.createBuildManually(testData.getBuildType().getName(), "");
+        createBuildConfigPage.getCreateManuallyForm().getErrorBuildTypeExternalId()
                 .shouldBe(Condition.visible, Duration.ofSeconds(1))
-                .shouldHave(Condition.text("Build configuration name must not be empty"));
-
-        new UncheckedRequests(Specifications.getSpec().authSpec(testData.getUser()))
-                .getBuildConfigRequest()
-                .get(testData.getBuildType().getName())
-                .then()
-                .assertThat()
-                .statusCode(HttpStatus.SC_NOT_FOUND);
-    }
-
-    @Test
-    public void newBuildConfigurationCanNotBeCreatedWhenUserClicksCancel() {
-        var testData = testDataStorage.addTestData();
-
-        loginAsAuthorizedUser(testData.getUser());
-
-        var project = new CheckedRequests(Specifications.getSpec().authSpec(testData.getUser()))
-                .getProjectRequest()
-                .create(testData.getNewProjectDescription());
-
-        var createBuildConfigPage = new CreateBuildConfigPage().open(project.getId());
-        createBuildConfigPage.createBuildByUrl(TEST_VCS_URL);
-        createBuildConfigPage.setupUrlBuild(testData.getBuildType().getName());
-        createBuildConfigPage.cancel()
-                .getCreateFromUrlForm()
-                .getUrlInput()
-                .shouldBe(Condition.visible, Duration.ofSeconds(3));
+                .shouldHave(Condition.text("The ID field must not be empty."));
 
         new UncheckedRequests(Specifications.getSpec().authSpec(testData.getUser()))
                 .getBuildConfigRequest()
