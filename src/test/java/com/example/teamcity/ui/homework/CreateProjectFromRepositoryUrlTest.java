@@ -59,6 +59,7 @@ public class CreateProjectFromRepositoryUrlTest extends BaseUiTest {
         new CreateNewProjectPage()
                 .open(testData.getNewProjectDescription().getParentProject().getLocator())
                 .createProjectByUrl("")
+                .getCreateFromUrlForm()
                 .getErrorUrlMessage()
                 .shouldBe(Condition.visible, Duration.ofSeconds(1))
                 .shouldHave(Condition.text("URL must not be empty"));
@@ -76,7 +77,8 @@ public class CreateProjectFromRepositoryUrlTest extends BaseUiTest {
 
         createNewProjectPage.createProjectByUrl(TEST_VCS_URL);
         createNewProjectPage.setupUrlProjectAndSubmit("", testData.getBuildType().getName());
-        createNewProjectPage.getErrorProjectName()
+        createNewProjectPage.getCreateProjectForm()
+                .getErrorProjectName()
                 .shouldBe(Condition.visible, Duration.ofSeconds(1))
                 .shouldHave(Condition.text("Project name must not be empty"));
 
@@ -99,7 +101,8 @@ public class CreateProjectFromRepositoryUrlTest extends BaseUiTest {
 
         createNewProjectPage.createProjectByUrl(TEST_VCS_URL);
         createNewProjectPage.setupUrlProjectAndSubmit(testData.getNewProjectDescription().getName(), "");
-        createNewProjectPage.getErrorBuildTypeName()
+        createNewProjectPage.getCreateProjectForm()
+                .getErrorBuildTypeName()
                 .shouldBe(Condition.visible, Duration.ofSeconds(1))
                 .shouldHave(Condition.text("Build configuration name must not be empty"));
 
@@ -125,6 +128,7 @@ public class CreateProjectFromRepositoryUrlTest extends BaseUiTest {
                         testData.getNewProjectDescription().getName(),
                         testData.getBuildType().getName());
         createNewProjectPage.cancel()
+                .getCreateFromUrlForm()
                 .getUrlInput()
                 .shouldBe(Condition.visible, Duration.ofSeconds(3));
 

@@ -4,6 +4,9 @@ import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import com.example.teamcity.ui.Selectors;
+import com.example.teamcity.ui.elements.CreateProjectForm;
+import com.example.teamcity.ui.elements.CreateProjectFromUrlForm;
+import com.example.teamcity.ui.elements.CreateProjectManuallyForm;
 import com.example.teamcity.ui.pages.Page;
 import lombok.Getter;
 
@@ -13,15 +16,9 @@ import static com.codeborne.selenide.Selenide.element;
 
 @Getter
 public class CreateNewProjectPage extends Page {
-    private SelenideElement urlInput = element(Selectors.byId("url"));
-    private SelenideElement projectNameInput = element(Selectors.byId("projectName"));
-    private SelenideElement nameInput = element(Selectors.byId("name"));
-    private SelenideElement projectIdInput = element(Selectors.byId("externalId"));
-    private SelenideElement buildTypeNameInput = element(Selectors.byId("buildTypeName"));
-    private SelenideElement errorUrlMessage = element(Selectors.byId("error_url"));
-    private SelenideElement errorProjectName = element(Selectors.byId("error_projectName"));
-    private SelenideElement errorBuildTypeName = element(Selectors.byId("error_buildTypeName"));
-    private SelenideElement cancelButton = element(Selectors.byClass("btn cancel"));
+    private CreateProjectFromUrlForm createFromUrlForm = new CreateProjectFromUrlForm(element(Selectors.byId("createFromUrlForm")));
+    private CreateProjectForm createProjectForm = new CreateProjectForm(element(Selectors.byId("createProjectForm")));
+    private CreateProjectManuallyForm createManuallyForm = new CreateProjectManuallyForm(element(Selectors.byId("editProjectForm")));
     private SelenideElement createFromUrlButton = element(Selectors.byHref("#createFromUrl"));
     private SelenideElement createManuallyButton = element(Selectors.byHref("#createManually"));
 
@@ -35,7 +32,7 @@ public class CreateNewProjectPage extends Page {
 
     public CreateNewProjectPage createProjectByUrl(String url) {
         createFromUrlButton.shouldBe(Condition.visible, Duration.ofSeconds(5)).click();
-        urlInput.sendKeys(url);
+        createFromUrlForm.getUrlInput().sendKeys(url);
         submit();
         return this;
     }
@@ -47,17 +44,17 @@ public class CreateNewProjectPage extends Page {
 
     public void setupManualProject(String name, String projectId) {
         createManuallyButton.shouldBe(Condition.visible, Duration.ofSeconds(5)).click();
-        nameInput.sendKeys(name);
-        projectIdInput.clear();
-        projectIdInput.sendKeys(projectId);
+        createManuallyForm.getNameInput().sendKeys(name);
+        createManuallyForm.getProjectIdInput().clear();
+        createManuallyForm.getProjectIdInput().sendKeys(projectId);
     }
 
     public void setupUrlProject(String projectName, String buildTypeName) {
-        projectNameInput.shouldBe(Condition.visible, Duration.ofSeconds(5));
-        projectNameInput.clear();
-        projectNameInput.sendKeys(projectName);
-        buildTypeNameInput.clear();
-        buildTypeNameInput.sendKeys(buildTypeName);
+        createProjectForm.getProjectNameInput().shouldBe(Condition.visible, Duration.ofSeconds(5));
+        createProjectForm.getProjectNameInput().clear();
+        createProjectForm.getProjectNameInput().sendKeys(projectName);
+        createProjectForm.getBuildTypeNameInput().clear();
+        createProjectForm.getBuildTypeNameInput().sendKeys(buildTypeName);
     }
 
     public void setupUrlProjectAndSubmit(String projectName, String buildTypeName) {
@@ -66,7 +63,7 @@ public class CreateNewProjectPage extends Page {
     }
 
     public CreateNewProjectPage cancel() {
-        cancelButton.click();
+        createProjectForm.getCancelButton().click();
         return this;
     }
 }
