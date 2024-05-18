@@ -23,4 +23,8 @@ public class Selectors {
     public static ByAttribute byAriaLabel(String value) {
         return new ByAttribute("aria-label", value);
     }
+
+    public static ByAttribute byHref(String value) {
+        return new ByAttribute("href", value);
+    }
 }

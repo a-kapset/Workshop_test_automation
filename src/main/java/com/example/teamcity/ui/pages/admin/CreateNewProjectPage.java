@@ -15,11 +15,15 @@ import static com.codeborne.selenide.Selenide.element;
 public class CreateNewProjectPage extends Page {
     private SelenideElement urlInput = element(Selectors.byId("url"));
     private SelenideElement projectNameInput = element(Selectors.byId("projectName"));
+    private SelenideElement nameInput = element(Selectors.byId("name"));
+    private SelenideElement projectIdInput = element(Selectors.byId("externalId"));
     private SelenideElement buildTypeNameInput = element(Selectors.byId("buildTypeName"));
     private SelenideElement errorUrlMessage = element(Selectors.byId("error_url"));
     private SelenideElement errorProjectName = element(Selectors.byId("error_projectName"));
     private SelenideElement errorBuildTypeName = element(Selectors.byId("error_buildTypeName"));
     private SelenideElement cancelButton = element(Selectors.byClass("btn cancel"));
+    private SelenideElement createFromUrlButton = element(Selectors.byHref("#createFromUrl"));
+    private SelenideElement createManuallyButton = element(Selectors.byHref("#createManually"));
 
     public CreateNewProjectPage open(String parentProjectId) {
         Selenide.open("/admin/createObjectMenu.html?projectId=" +
@@ -30,21 +34,34 @@ public class CreateNewProjectPage extends Page {
     }
 
     public CreateNewProjectPage createProjectByUrl(String url) {
+        createFromUrlButton.shouldBe(Condition.visible, Duration.ofSeconds(5)).click();
         urlInput.sendKeys(url);
         submit();
         return this;
     }
 
-    public void setupProject(String projectName, String buildTypeName) {
-        projectNameInput.shouldBe(Condition.visible, Duration.ofSeconds(60));
+    public void createProjectManually(String name, String projectId) {
+        setupManualProject(name, projectId);
+        submit();
+    }
+
+    public void setupManualProject(String name, String projectId) {
+        createManuallyButton.shouldBe(Condition.visible, Duration.ofSeconds(5)).click();
+        nameInput.sendKeys(name);
+        projectIdInput.clear();
+        projectIdInput.sendKeys(projectId);
+    }
+
+    public void setupUrlProject(String projectName, String buildTypeName) {
+        projectNameInput.shouldBe(Condition.visible, Duration.ofSeconds(5));
         projectNameInput.clear();
         projectNameInput.sendKeys(projectName);
         buildTypeNameInput.clear();
         buildTypeNameInput.sendKeys(buildTypeName);
     }
 
-    public void setupProjectAndSubmit(String projectName, String buildTypeName) {
-        setupProject(projectName, buildTypeName);
+    public void setupUrlProjectAndSubmit(String projectName, String buildTypeName) {
+        setupUrlProject(projectName, buildTypeName);
         submit();
     }
 

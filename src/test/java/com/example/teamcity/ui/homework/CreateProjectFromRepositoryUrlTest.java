@@ -26,7 +26,7 @@ public class CreateProjectFromRepositoryUrlTest extends BaseUiTest {
         new CreateNewProjectPage()
                 .open(testData.getNewProjectDescription().getParentProject().getLocator())
                 .createProjectByUrl(TEST_VCS_URL)
-                .setupProjectAndSubmit(
+                .setupUrlProjectAndSubmit(
                         testData.getNewProjectDescription().getName(),
                         testData.getBuildType().getName());
 
@@ -75,7 +75,7 @@ public class CreateProjectFromRepositoryUrlTest extends BaseUiTest {
                 .open(testData.getNewProjectDescription().getParentProject().getLocator());
 
         createNewProjectPage.createProjectByUrl(TEST_VCS_URL);
-        createNewProjectPage.setupProjectAndSubmit("", testData.getBuildType().getName());
+        createNewProjectPage.setupUrlProjectAndSubmit("", testData.getBuildType().getName());
         createNewProjectPage.getErrorProjectName()
                 .shouldBe(Condition.visible, Duration.ofSeconds(1))
                 .shouldHave(Condition.text("Project name must not be empty"));
@@ -98,7 +98,7 @@ public class CreateProjectFromRepositoryUrlTest extends BaseUiTest {
                 .open(testData.getNewProjectDescription().getParentProject().getLocator());
 
         createNewProjectPage.createProjectByUrl(TEST_VCS_URL);
-        createNewProjectPage.setupProjectAndSubmit(testData.getNewProjectDescription().getName(), "");
+        createNewProjectPage.setupUrlProjectAndSubmit(testData.getNewProjectDescription().getName(), "");
         createNewProjectPage.getErrorBuildTypeName()
                 .shouldBe(Condition.visible, Duration.ofSeconds(1))
                 .shouldHave(Condition.text("Build configuration name must not be empty"));
@@ -121,7 +121,7 @@ public class CreateProjectFromRepositoryUrlTest extends BaseUiTest {
                 .open(testData.getNewProjectDescription().getParentProject().getLocator());
 
         createNewProjectPage.createProjectByUrl(TEST_VCS_URL);
-        createNewProjectPage.setupProject(
+        createNewProjectPage.setupUrlProject(
                         testData.getNewProjectDescription().getName(),
                         testData.getBuildType().getName());
         createNewProjectPage.cancel()

@@ -17,7 +17,7 @@ public class CreateNewProjectTest extends BaseUiTest {
         new CreateNewProjectPage()
                 .open(testData.getNewProjectDescription().getParentProject().getLocator())
                 .createProjectByUrl(url)
-                .setupProjectAndSubmit(
+                .setupUrlProjectAndSubmit(
                         testData.getNewProjectDescription().getName(),
                         testData.getBuildType().getName());
 
