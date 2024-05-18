@@ -1,0 +1,24 @@
+Start Selenoid container with PowerShell
+1.
+$current = $PWD -replace "\\", "/" -replace "C", "c"  
+2.
+docker run -d                                           `
+--name selenoid                                         `
+-p 4444:4444                                            `
+-v //var/run/docker.sock:/var/run/docker.sock           `
+-v ${current}/config/:/etc/selenoid/:ro                 `
+aerokube/selenoid:latest-release
+
+Start Selenoid-UI container with PowerShell
+1.
+# Получение всех IP-адресов, исключая 127.0.0.1, и вывод первого из них
+$firstIP = Get-NetIPAddress -AddressFamily IPv4 | Where-Object {
+    $_.IPAddress -notlike "127.0.0.1"
+} | Select-Object -First 1 -ExpandProperty IPAddress
+
+Write-Output $firstIP
+
+2.
+docker run -d --name selenoid-ui -p 8080:8080 aerokube/selenoid-ui --selenoid-uri http://{value of $firstIP}:4444
+
+docker run -d --name selenoid-ui -p 8080:8080 aerokube/selenoid-ui --selenoid-uri http://172.19.208.1:4444
