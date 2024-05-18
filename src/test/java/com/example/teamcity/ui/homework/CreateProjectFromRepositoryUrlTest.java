@@ -114,7 +114,7 @@ public class CreateProjectFromRepositoryUrlTest extends BaseUiTest {
     }
 
     @Test
-    public void newProjectIsNotCreatedWhenUserClickCancel() {
+    public void newProjectIsNotCreatedWhenUserClicksCancel() {
         var testData = testDataStorage.addTestData();
 
         loginAsAuthorizedUser(testData.getUser());

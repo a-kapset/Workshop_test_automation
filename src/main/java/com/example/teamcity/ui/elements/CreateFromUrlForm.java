@@ -5,11 +5,11 @@ import com.example.teamcity.ui.Selectors;
 import lombok.Getter;
 
 @Getter
-public class CreateProjectFromUrlForm extends PageElement {
+public class CreateFromUrlForm extends PageElement {
     private SelenideElement urlInput;
     private SelenideElement errorUrlMessage;
     
-    public CreateProjectFromUrlForm(SelenideElement element) {
+    public CreateFromUrlForm(SelenideElement element) {
         super(element);
         this.urlInput = findElement(Selectors.byId("url"));
         this.errorUrlMessage = findElement(Selectors.byId("error_url"));

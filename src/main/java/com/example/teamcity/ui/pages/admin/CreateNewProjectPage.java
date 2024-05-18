@@ -5,7 +5,7 @@ import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import com.example.teamcity.ui.Selectors;
 import com.example.teamcity.ui.elements.CreateProjectForm;
-import com.example.teamcity.ui.elements.CreateProjectFromUrlForm;
+import com.example.teamcity.ui.elements.CreateFromUrlForm;
 import com.example.teamcity.ui.elements.CreateProjectManuallyForm;
 import com.example.teamcity.ui.pages.Page;
 import lombok.Getter;
@@ -16,7 +16,7 @@ import static com.codeborne.selenide.Selenide.element;
 
 @Getter
 public class CreateNewProjectPage extends Page {
-    private CreateProjectFromUrlForm createFromUrlForm = new CreateProjectFromUrlForm(element(Selectors.byId("createFromUrlForm")));
+    private CreateFromUrlForm createFromUrlForm = new CreateFromUrlForm(element(Selectors.byId("createFromUrlForm")));
     private CreateProjectForm createProjectForm = new CreateProjectForm(element(Selectors.byId("createProjectForm")));
     private CreateProjectManuallyForm createManuallyForm = new CreateProjectManuallyForm(element(Selectors.byId("editProjectForm")));
     private SelenideElement createFromUrlButton = element(Selectors.byHref("#createFromUrl"));
