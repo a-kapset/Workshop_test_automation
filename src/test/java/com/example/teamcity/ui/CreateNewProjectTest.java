@@ -29,7 +29,5 @@ public class CreateNewProjectTest extends BaseUiTest {
                 .get()
                 .getHeader()
                 .shouldHave(Condition.text(testData.getNewProjectDescription().getName()));
-
-        System.out.println();
     }
 }

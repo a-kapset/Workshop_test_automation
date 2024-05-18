@@ -14,6 +14,7 @@ public class CreateNewProjectPage extends Page {
     private SelenideElement urlInput = element(Selectors.byId("url"));
     private SelenideElement projectNameInput = element(Selectors.byId("projectName"));
     private SelenideElement buildTypeNameInput = element(Selectors.byId("buildTypeName"));
+    private SelenideElement parentProjectSelector = element(Selectors.byId("parentIdSelect"));
 
     public CreateNewProjectPage open(String parentProjectId) {
         Selenide.open("/admin/createObjectMenu.html?projectId=" +
@@ -38,7 +39,15 @@ public class CreateNewProjectPage extends Page {
         projectNameInput.clear();
         projectNameInput.sendKeys(projectName);
         buildTypeNameInput.clear();
-        buildTypeNameInput.sendKeys(projectName);
+        buildTypeNameInput.sendKeys(buildTypeName);
         submit();
+    }
+
+    public CreateNewProjectPage selectParentProject(String parentProjectName) {
+        parentProjectSelector.shouldBe(Condition.visible, Duration.ofSeconds(60));
+        parentProjectSelector.click();
+        element(Selectors.byAriaLabel(parentProjectName)).click();
+
+        return this;
     }
 }
