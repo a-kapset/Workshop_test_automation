@@ -23,11 +23,11 @@ public class ProjectUncheckedRequest extends Request implements CrudInterface {
     }
 
     @Override
-    public Response get(String id) {
+    public Response get(String name) {
         return RestAssured
                 .given()
                 .spec(spec)
-                .get(PROJECT_ENDPOINT + "/id:" + id);
+                .get(PROJECT_ENDPOINT + "/name:" + name);
     }
 
     @Override
