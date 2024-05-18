@@ -63,7 +63,6 @@ public class CreateProjectFromRepositoryUrlTest extends BaseUiTest {
                 .getErrorUrlMessage()
                 .shouldBe(Condition.visible, Duration.ofSeconds(1))
                 .shouldHave(Condition.text("URL must not be empty"));
-
     }
 
     @Test

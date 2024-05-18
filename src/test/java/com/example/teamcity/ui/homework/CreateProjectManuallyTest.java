@@ -54,4 +54,48 @@ public class CreateProjectManuallyTest extends BaseUiTest {
                 .body("parentProjectId", equalTo(testData.getNewProjectDescription().getParentProject().getLocator()))
                 .body("buildTypes.count", equalTo(0));
     }
+
+    @Test
+    public void newProjectCanNotBeCreatedWhenProjectNameIsEmpty() {
+        var testData = testDataStorage.addTestData();
+
+        loginAsAuthorizedUser(testData.getUser());
+
+        var createNewProjectPage = new CreateNewProjectPage()
+                .open(testData.getNewProjectDescription().getParentProject().getLocator());
+        createNewProjectPage.createProjectManually("", testData.getNewProjectDescription().getId());
+        createNewProjectPage.getCreateManuallyForm()
+                .getErrorName()
+                .shouldBe(Condition.visible, Duration.ofSeconds(1))
+                .shouldHave(Condition.text("Project name is empty"));
+
+        new UncheckedRequests(Specifications.getSpec().authSpec(testData.getUser()))
+                .getProjectRequest()
+                .get(testData.getNewProjectDescription().getName())
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.SC_NOT_FOUND);
+    }
+
+    @Test
+    public void newProjectCanNotBeCreatedWhenProjectIdIsEmpty() {
+        var testData = testDataStorage.addTestData();
+
+        loginAsAuthorizedUser(testData.getUser());
+
+        var createNewProjectPage = new CreateNewProjectPage()
+                .open(testData.getNewProjectDescription().getParentProject().getLocator());
+        createNewProjectPage.createProjectManually(testData.getNewProjectDescription().getName(), "");
+        createNewProjectPage.getCreateManuallyForm()
+                .getErrorProjectId()
+                .shouldBe(Condition.visible, Duration.ofSeconds(1))
+                .shouldHave(Condition.text("Project ID must not be empty."));
+
+        new UncheckedRequests(Specifications.getSpec().authSpec(testData.getUser()))
+                .getProjectRequest()
+                .get(testData.getNewProjectDescription().getName())
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.SC_NOT_FOUND);
+    }
 }
