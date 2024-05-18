@@ -13,10 +13,10 @@ import java.util.function.Function;
 
 import static com.codeborne.selenide.Selenide.*;
 
-public class Page {
+public abstract class Page {
+    private SelenideElement pageWaitingMarker = element(Selectors.byDataTest("ring-loader"));
     private SelenideElement submitButton = element(Selectors.byType("submit"));
     private SelenideElement savingWaitingMarker = element(Selectors.byId("saving"));
-    private SelenideElement pageWaitingMarker = element(Selectors.byDataTest("ring-loader"));
 
     protected void submit() {
         submitButton.click();

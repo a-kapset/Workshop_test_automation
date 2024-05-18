@@ -10,10 +10,8 @@ import java.time.Duration;
 import static com.codeborne.selenide.Selenide.element;
 import static com.codeborne.selenide.Selenide.sleep;
 
-public class FavoritesPage extends Page {
+public abstract class FavoritesPage extends Page {
     private SelenideElement header = element(Selectors.byClass("ProjectPageHeader__title--ih"));
-    private SelenideElement ringLoaderInline = element(Selectors.byDataTest("ring-loader-inline"));
-    private SelenideElement loadingWarningMark = element(Selectors.byId("#loadingWarning"));
 
     protected void waitUntilFavoritePageIsLoaded() {
         waitUntilPageIsLoaded();
