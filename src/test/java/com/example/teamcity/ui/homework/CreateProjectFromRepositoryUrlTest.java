@@ -7,7 +7,6 @@ import com.example.teamcity.ui.BaseUiTest;
 import com.example.teamcity.ui.pages.ProjectsPage;
 import com.example.teamcity.ui.pages.admin.CreateNewProjectPage;
 import org.apache.http.HttpStatus;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
