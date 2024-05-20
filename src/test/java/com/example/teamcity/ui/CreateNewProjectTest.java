@@ -17,7 +17,7 @@ public class CreateNewProjectTest extends BaseUiTest {
         new CreateNewProjectPage()
                 .open(testData.getNewProjectDescription().getParentProject().getLocator())
                 .createProjectByUrl(url)
-                .setupProject(
+                .setupUrlProjectAndSubmit(
                         testData.getNewProjectDescription().getName(),
                         testData.getBuildType().getName());
 
@@ -29,7 +29,5 @@ public class CreateNewProjectTest extends BaseUiTest {
                 .get()
                 .getHeader()
                 .shouldHave(Condition.text(testData.getNewProjectDescription().getName()));
-
-        System.out.println();
     }
 }

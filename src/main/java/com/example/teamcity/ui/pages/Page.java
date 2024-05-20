@@ -11,12 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
-import static com.codeborne.selenide.Selenide.element;
+import static com.codeborne.selenide.Selenide.*;
 
-public class Page {
+public abstract class Page {
+    private SelenideElement pageWaitingMarker = element(Selectors.byDataTest("ring-loader"));
     private SelenideElement submitButton = element(Selectors.byType("submit"));
     private SelenideElement savingWaitingMarker = element(Selectors.byId("saving"));
-    private SelenideElement pageWaitingMarker = element(Selectors.byDataTest("ring-loader"));
 
     protected void submit() {
         submitButton.click();
@@ -39,5 +39,15 @@ public class Page {
         collection.forEach(webElement -> elements.add(creator.apply(webElement)));
 
         return elements;
+    }
+
+    protected void waitForAjax() {
+        while (true) {
+            Boolean ajaxComplete = executeJavaScript("return jQuery.active === 0");
+            if (Boolean.TRUE.equals(ajaxComplete)) {
+                break;
+            }
+            sleep(100);
+        }
     }
 }
