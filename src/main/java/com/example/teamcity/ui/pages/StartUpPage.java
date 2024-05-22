@@ -12,10 +12,10 @@ import static com.codeborne.selenide.Selenide.element;
 
 @Getter
 public class StartUpPage extends Page {
-    private SelenideElement proceedButton = element(Selectors.byId("#proceedButton"));
-    private SelenideElement restoreFromBackupButton = element(Selectors.byId("#restoreButton"));
-    private SelenideElement acceptLicenseChBox = element(Selectors.byId("#accept"));
-    private SelenideElement header = element(Selectors.byId("#header"));
+    private SelenideElement proceedButton = element(Selectors.byId("proceedButton"));
+    private SelenideElement restoreFromBackupButton = element(Selectors.byId("restoreButton"));
+    private SelenideElement acceptLicenseChBox = element(Selectors.byId("accept"));
+    private SelenideElement header = element(Selectors.byId("header"));
 
 
     public StartUpPage open() {
