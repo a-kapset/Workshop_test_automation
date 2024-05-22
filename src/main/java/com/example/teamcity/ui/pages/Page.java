@@ -15,7 +15,7 @@ import static com.codeborne.selenide.Selenide.*;
 
 public abstract class Page {
     private SelenideElement pageWaitingMarker = element(Selectors.byDataTest("ring-loader"));
-    private SelenideElement submitButton = element(Selectors.byType("submit"));
+    protected SelenideElement submitButton = element(Selectors.byType("submit"));
     private SelenideElement savingWaitingMarker = element(Selectors.byId("saving"));
 
     protected void submit() {
