@@ -13,12 +13,18 @@ import lombok.Getter;
 import java.time.Duration;
 
 import static com.codeborne.selenide.Selenide.element;
+import static com.codeborne.selenide.Selenide.sleep;
 
 @Getter
 public class CreateNewProjectPage extends Page {
-    private CreateFromUrlForm createFromUrlForm = new CreateFromUrlForm(element(Selectors.byId("createFromUrlForm")));
-    private CreateProjectForm createProjectForm = new CreateProjectForm(element(Selectors.byId("createProjectForm")));
-    private CreateProjectManuallyForm createManuallyForm = new CreateProjectManuallyForm(element(Selectors.byId("editProjectForm")));
+    private SelenideElement fromUrlFormBaseElement = element(Selectors.byId("createFromUrlForm"));
+    private SelenideElement projectFormBaseElement = element(Selectors.byId("createProjectForm"));
+    private SelenideElement manuallyFormBaseElement = element(Selectors.byId("editProjectForm"));
+
+    private CreateFromUrlForm createFromUrlForm = new CreateFromUrlForm(fromUrlFormBaseElement);
+    private CreateProjectForm createProjectForm = new CreateProjectForm(projectFormBaseElement);
+    private CreateProjectManuallyForm createManuallyForm = new CreateProjectManuallyForm(manuallyFormBaseElement);
+
     private SelenideElement createFromUrlButton = element(Selectors.byHref("#createFromUrl"));
     private SelenideElement createManuallyButton = element(Selectors.byHref("#createManually"));
 
@@ -32,8 +38,11 @@ public class CreateNewProjectPage extends Page {
 
     public CreateNewProjectPage createProjectByUrl(String url) {
         createFromUrlButton.shouldBe(Condition.visible, Duration.ofSeconds(5)).click();
+        fromUrlFormBaseElement.shouldBe(Condition.visible, Duration.ofSeconds(6));
+
         createFromUrlForm.getUrlInput().sendKeys(url);
         submit();
+
         return this;
     }
 
@@ -44,12 +53,18 @@ public class CreateNewProjectPage extends Page {
 
     public void setupManualProject(String name, String projectId) {
         createManuallyButton.shouldBe(Condition.visible, Duration.ofSeconds(5)).click();
+        manuallyFormBaseElement.shouldBe(Condition.visible, Duration.ofSeconds(6));
+
+        createManuallyForm.getNameInput().shouldBe(Condition.visible, Duration.ofSeconds(5));
         createManuallyForm.getNameInput().sendKeys(name);
         createManuallyForm.getProjectIdInput().clear();
         createManuallyForm.getProjectIdInput().sendKeys(projectId);
     }
 
     public void setupUrlProject(String projectName, String buildTypeName) {
+        projectFormBaseElement.shouldBe(Condition.exist, Duration.ofSeconds(10));
+        projectFormBaseElement.shouldBe(Condition.visible, Duration.ofSeconds(10));
+
         createProjectForm.getProjectNameInput().shouldBe(Condition.visible, Duration.ofSeconds(5));
         createProjectForm.getProjectNameInput().clear();
         createProjectForm.getProjectNameInput().sendKeys(projectName);

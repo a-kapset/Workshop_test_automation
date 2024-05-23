@@ -1,7 +1,7 @@
 package com.example.teamcity.ui;
 
 import com.codeborne.selenide.Condition;
-import com.example.teamcity.ui.pages.ProjectsPage;
+import com.example.teamcity.ui.pages.favorites.ProjectsPage;
 import com.example.teamcity.ui.pages.admin.CreateNewProjectPage;
 import org.testng.annotations.Test;
 

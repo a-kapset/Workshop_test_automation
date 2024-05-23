@@ -103,6 +103,10 @@
                             <value>${project.build.directory}/allure-results</value>
                         </property>
                     </systemProperties>
+                    <suiteXmlFiles>
+                        <suiteXmlFile>testng-suites/regression.xml</suiteXmlFile>
+                        <suiteXmlFile>testng-suites/smoke.xml</suiteXmlFile>
+                    </suiteXmlFiles>
                 </configuration>
                 <dependencies>
                     <dependency>

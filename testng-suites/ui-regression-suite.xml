@@ -1,0 +1,11 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="UI Regression Suite">
+    <test name="UI Regression Tests">
+        <classes>
+            <class name="com.example.teamcity.ui.homework.CreateBuildConfigurationFromRepositoryUrlTest"/>
+            <class name="com.example.teamcity.ui.homework.CreateBuildConfigurationManuallyTest"/>
+            <class name="com.example.teamcity.ui.homework.CreateProjectFromRepositoryUrlTest"/>
+            <class name="com.example.teamcity.ui.homework.CreateProjectManuallyTest"/>
+        </classes>
+    </test>
+</suite>

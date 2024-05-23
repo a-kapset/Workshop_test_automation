@@ -41,3 +41,4 @@ build/
 /allure-results
 
 *.log
+/teamcity_tests_infrastructure

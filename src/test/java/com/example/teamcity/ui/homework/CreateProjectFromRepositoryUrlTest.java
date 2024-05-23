@@ -4,7 +4,7 @@ import com.codeborne.selenide.Condition;
 import com.example.teamcity.api.requests.UncheckedRequests;
 import com.example.teamcity.api.spec.Specifications;
 import com.example.teamcity.ui.BaseUiTest;
-import com.example.teamcity.ui.pages.ProjectsPage;
+import com.example.teamcity.ui.pages.favorites.ProjectsPage;
 import com.example.teamcity.ui.pages.admin.CreateNewProjectPage;
 import org.apache.http.HttpStatus;
 import org.testng.annotations.Test;

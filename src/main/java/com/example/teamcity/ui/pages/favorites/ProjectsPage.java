@@ -1,10 +1,9 @@
-package com.example.teamcity.ui.pages;
+package com.example.teamcity.ui.pages.favorites;
 
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.Selenide;
 import com.example.teamcity.ui.Selectors;
 import com.example.teamcity.ui.elements.ProjectElement;
-import com.example.teamcity.ui.pages.favorites.FavoritesPage;
 
 import java.util.List;
 
