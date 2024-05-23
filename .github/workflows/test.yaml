@@ -20,8 +20,8 @@ jobs:
         run: |
           echo "HOST=$(ifconfig | grep -E "([0-9]{1,3}\.){3}[0-9]{1,3}" | grep -v 127.0.0.1 | awk '{ print $2 }' | cut -f2 -d: | head -n1)" >> $GITHUB_ENV
 
-      - name: Setup host config.properties
-        run: echo "host=$HOST:8111" >> src/main/resources/config.properties
+#      - name: Setup host config.properties
+#        run: echo "host=$HOST:8111" >> src/main/resources/config.properties
 
       - name: Pull Selenoid Chrome/Firefox/...
         run: docker pull selenoid/vnc_chrome:119.0
@@ -50,7 +50,12 @@ jobs:
           -v $(pwd)/tmp/teamcity_server/datadir:/data/teamcity_server/datadir \
           -v $(pwd)/tmp/teamcity_server/logs:/opt/teamcity/logs               \
           -p 8111:8111                                                        \
-          jetbrains/teamcity-server:2023.11.1
+          jetbrains/teamcity-server:2023.11.1      - name: Setup host and superUserToken config properties
+
+      - name: Set config properties for server configuration
+        run: |
+          echo "hostForSetUp=$HOST:8111" >> src/main/resources/config.properties
+          echo "browserForSetUp=firefox" >> src/main/resources/config.properties
 
       - name: Setup TeamCity Server
         run: ./mvnw clean test -Dtest=SetupTest#startUpTest
@@ -58,8 +63,8 @@ jobs:
       - name: Set up superUserToken environment variable
         # Берем из лога контейнера строку с последним упоминанием токена, из нее 6-е слово, что соответствует токену
         run: echo "SUPER_USER_TOKEN=$(docker logs teamcity-server | grep 'Super user authentication token' | tail -n 1 | awk '{print $6}')" >> $GITHUB_ENV
-      - name: Set up superUserToken config property
-        run: echo "superUserToken=$SUPER_USER_TOKEN" >> src/main/resources/config.properties
+#      - name: Set up superUserToken config property
+#        run: echo "superUserToken=$SUPER_USER_TOKEN" >> src/main/resources/config.properties
 
 #      - name: Run TeamCity agent
 #        run: |
@@ -72,6 +77,13 @@ jobs:
 #        # Не указываем clean, чтобы потом в итоговом репорте были и setup тесты
 #        run: ./mvnw test -Dtest=SetupTest#startUpTest
 
+      - name: Clear and set new config properties for tests
+        run: |
+          echo "" > src/main/resources/config.properties
+          echo "host=$HOST:8111" >> src/main/resources/config.properties
+          echo "superUserToken=$SUPER_USER_TOKEN" >> src/main/resources/config.properties
+          echo "browser=firefox" >> src/main/resources/config.properties
+
       - name: Run tests
         # Указываем группу, чтобы еще раз не запустить тесты, которые использовались для сетапа сервера и агента
-        run: ./mvnw test -Dgroups=Regression
+        run: ./mvnw test -DsuiteXmlFile=testng-suites/smoke
