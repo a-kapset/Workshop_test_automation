@@ -44,6 +44,9 @@ jobs:
           echo "hostForSetUp=$HOST:8111" >> src/main/resources/config.properties
           echo "browserForSetUp=firefox" >> src/main/resources/config.properties
 
+      - name: Make mvnw executable
+        run: chmod +x ./mvnw
+
       - name: Configure TeamCity Server
         run: ./mvnw clean test -Dtest=SetupTest#startUpTest
 
