@@ -1,0 +1,9 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="API Regression Suite">
+    <test name="API Regression Tests">
+        <classes>
+            <class name="com.example.teamcity.api.homework.BuildConfigCreationTest"/>
+            <class name="com.example.teamcity.api.homework.ProjectCreationTest"/>
+        </classes>
+    </test>
+</suite>

@@ -95,10 +95,15 @@ $propertiesContent | Out-File -FilePath "$teamcityTestsDirectory/src/main/resour
 # debug output
 Get-Content "$teamcityTestsDirectory/src/main/resources/config.properties"
 
-#################################################
-Write-Output "Run API tests"
-mvn clean test -DsuiteXmlFile=testng-suites/api-suite
+##################################################
+#Write-Output "Run API tests"
+#mvn clean test -DsuiteXmlFile=testng-suites/api-suite
+#
+##################################################
+#Write-Output "Run UI tests"
+#mvn clean test -DsuiteXmlFile=testng-suites/ui-suite
 
 #################################################
-Write-Output "Run UI tests"
-mvn clean test -DsuiteXmlFile=testng-suites/ui-suite
+Write-Output "Run all regression tests"
+mvn clean test -DsuiteXmlFile=testng-suites/regression
+
