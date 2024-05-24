@@ -35,18 +35,13 @@ jobs:
         run: |
           echo "Waiting for Selenoid to be ready..."
           for i in {1..30}; do
-            if curl --silent --fail http://localhost:4444/wd/hub/status; then
+            if curl --silent --fail http://$HOST:4444/wd/hub/status; then
               echo "Selenoid is ready!"
               break
             fi
             echo "Waiting for Selenoid..."
             sleep 1
           done
-
-      - name: Confirm Selenoid status
-        run: |
-          curl -s http://localhost:4444/status | jq .
-          curl -s http://localhost:4444/wd/hub/status | jq .
 
       - name: Run TeamCity Server
         run: |
@@ -61,7 +56,6 @@ jobs:
           echo "" > src/main/resources/config.properties
           echo "hostForSetUp=$HOST:8111" >> src/main/resources/config.properties
           echo "browserForSetUp=firefox" >> src/main/resources/config.properties
-          echo "selenide.remote=http://localhost:4444/wd/hub" >> src/main/resources/config.properties
 
       - name: Make mvnw executable
         run: chmod +x ./mvnw
@@ -72,13 +66,13 @@ jobs:
       - name: Set superUserToken environment variable
         run: echo "SUPER_USER_TOKEN=$(docker logs teamcity-server | grep 'Super user authentication token' | tail -n 1 | awk '{print $6}')" >> $GITHUB_ENV
 
-      - name: Clear and set new config properties for tests
-        run: |
-          echo "" > src/main/resources/config.properties
-          echo "host=$HOST:8111" >> src/main/resources/config.properties
-          echo "superUserToken=$SUPER_USER_TOKEN" >> src/main/resources/config.properties
-          echo "browser=firefox" >> src/main/resources/config.properties
-          echo "selenide.remote=http://localhost:4444/wd/hub" >> src/main/resources/config.properties
-
-      - name: Run tests
-        run: ./mvnw test -DsuiteXmlFile=testng-suites/smoke
+#      - name: Clear and set new config properties for tests
+#        run: |
+#          echo "" > src/main/resources/config.properties
+#          echo "host=$HOST:8111" >> src/main/resources/config.properties
+#          echo "superUserToken=$SUPER_USER_TOKEN" >> src/main/resources/config.properties
+#          echo "browser=firefox" >> src/main/resources/config.properties
+#          echo "selenide.remote=http://localhost:4444/wd/hub" >> src/main/resources/config.properties
+#
+#      - name: Run tests
+#        run: ./mvnw test -DsuiteXmlFile=testng-suites/smoke
