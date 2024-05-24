@@ -77,6 +77,7 @@ jobs:
           echo "host=$HOST:8111" >> src/main/resources/config.properties
           echo "superUserToken=$SUPER_USER_TOKEN" >> src/main/resources/config.properties
           echo "browser=firefox" >> src/main/resources/config.properties
+          echo "remote=http://localhost:4444/wd/hub" >> src/main/resources/config.properties
 
       - name: Run tests
         run: ./mvnw test
