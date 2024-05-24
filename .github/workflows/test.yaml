@@ -31,6 +31,18 @@ jobs:
           -p 4444:4444                                 \
           aerokube/selenoid
 
+      - name: Wait for Selenoid to be ready
+        run: |
+          echo "Waiting for Selenoid to be ready..."
+          for i in {1..30}; do
+            if curl --silent --fail http://localhost:4444/wd/hub/status; then
+              echo "Selenoid is ready!"
+              break
+            fi
+            echo "Waiting for Selenoid..."
+            sleep 1
+          done
+
       - name: Run TeamCity Server
         run: |
           docker run -u 0 -d --name teamcity-server                           \
