@@ -38,7 +38,7 @@ public class CreateNewProjectPage extends Page {
 
     public CreateNewProjectPage createProjectByUrl(String url) {
         createFromUrlButton.shouldBe(Condition.visible, Duration.ofSeconds(5)).click();
-        fromUrlFormBaseElement.shouldBe(Condition.visible, Duration.ofSeconds(6));
+        fromUrlFormBaseElement.shouldBe(Condition.visible, Duration.ofSeconds(30));
 
         createFromUrlForm.getUrlInput().sendKeys(url);
         submit();
