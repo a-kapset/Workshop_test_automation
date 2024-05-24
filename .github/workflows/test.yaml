@@ -18,7 +18,7 @@ jobs:
 
       - name: Set host environment variable
         run: |
-          echo "HOST=$(ifconfig | grep -E "([0-9]{1,3}\.){3}[0-9]{1,3}" | grep -v 127.0.0.1 | awk '{ print $2 }' | cut -f2 -d: | head -n1)" >> $GITHUB_ENV
+          echo "HOST=$(ifconfig | grep -E "([0-9]{1,3}\.){3}[0-9]*" | grep -v 127.0.0.1 | awk '{ print $2 }' | cut -f2 -d: | head -n1)" >> $GITHUB_ENV
 
       - name: Pull Selenoid Chrome/Firefox/...
         run: docker pull selenoid/vnc_chrome:119.0
@@ -43,6 +43,11 @@ jobs:
             sleep 1
           done
 
+      - name: Confirm Selenoid status
+        run: |
+          curl -s http://localhost:4444/status | jq .
+          curl -s http://localhost:4444/wd/hub/status | jq .
+
       - name: Run TeamCity Server
         run: |
           docker run -u 0 -d --name teamcity-server                           \
@@ -56,6 +61,7 @@ jobs:
           echo "" > src/main/resources/config.properties
           echo "hostForSetUp=$HOST:8111" >> src/main/resources/config.properties
           echo "browserForSetUp=firefox" >> src/main/resources/config.properties
+          echo "selenide.remote=http://localhost:4444/wd/hub" >> src/main/resources/config.properties
 
       - name: Make mvnw executable
         run: chmod +x ./mvnw
@@ -72,6 +78,7 @@ jobs:
           echo "host=$HOST:8111" >> src/main/resources/config.properties
           echo "superUserToken=$SUPER_USER_TOKEN" >> src/main/resources/config.properties
           echo "browser=firefox" >> src/main/resources/config.properties
+          echo "selenide.remote=http://localhost:4444/wd/hub" >> src/main/resources/config.properties
 
       - name: Run tests
         run: ./mvnw test -DsuiteXmlFile=testng-suites/smoke
