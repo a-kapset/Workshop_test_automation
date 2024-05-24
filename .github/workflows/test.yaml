@@ -79,4 +79,4 @@ jobs:
           echo "browser=firefox" >> src/main/resources/config.properties
 
       - name: Run tests
-        run: ./mvnw test -DsuiteXmlFile=testng-suites/smoke
+        run: ./mvnw test

@@ -104,8 +104,8 @@
                         </property>
                     </systemProperties>
                     <suiteXmlFiles>
-                        <suiteXmlFile>testng-suites/regression.xml</suiteXmlFile>
-                        <suiteXmlFile>testng-suites/smoke.xml</suiteXmlFile>
+                        <suiteXmlFile>testng-suites/api-smoke-suite.xml</suiteXmlFile>
+                        <suiteXmlFile>testng-suites/ui-smoke-suite.xml</suiteXmlFile>
                     </suiteXmlFiles>
                 </configuration>
                 <dependencies>
