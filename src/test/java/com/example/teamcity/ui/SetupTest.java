@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
 public class SetupTest {
     @BeforeMethod
     public void setup() {
-        Configuration.baseUrl = "http://" + Config.getProperty("hostAndPortForSetUp");
+        Configuration.baseUrl = "http://" + Config.getProperty("hostForSetUp");
         Configuration.remote = "http://localhost:4444/wd/hub";
         Configuration.reportsFolder = "target/surefire-reports";
         Configuration.downloadsFolder ="target/downloads";
