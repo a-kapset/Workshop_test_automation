@@ -55,7 +55,6 @@ jobs:
         run: |
           echo "" > src/main/resources/config.properties
           echo "hostAndPortForSetUp=$HOST:8111" >> src/main/resources/config.properties
-          echo "hostForSetUp=$HOST" >> src/main/resources/config.properties
           echo "browserForSetUp=firefox" >> src/main/resources/config.properties
 
       - name: Make mvnw executable
