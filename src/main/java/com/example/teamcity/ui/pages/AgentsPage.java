@@ -16,11 +16,11 @@ public class AgentsPage extends Page {
     private SelenideElement confirmAuthorizeButton = element(By.xpath("//*[@data-test='ring-popup']//button[@type='submit']"));
 
     public void authorizeAgent() {
-        unauthorizedAgentsLink.shouldBe(Condition.visible, Duration.ofSeconds(15));
+        unauthorizedAgentsLink.shouldBe(Condition.visible, Duration.ofSeconds(20));
         unauthorizedAgentsLink.click();
-        authorizeButton.shouldBe(Condition.visible, Duration.ofSeconds(15));
+        authorizeButton.shouldBe(Condition.visible, Duration.ofSeconds(5));
         authorizeButton.click();
-        confirmAuthorizeButton.shouldBe(Condition.visible, Duration.ofSeconds(15));
+        confirmAuthorizeButton.shouldBe(Condition.visible, Duration.ofSeconds(5));
         confirmAuthorizeButton.click();
         sleep(2000);
     }

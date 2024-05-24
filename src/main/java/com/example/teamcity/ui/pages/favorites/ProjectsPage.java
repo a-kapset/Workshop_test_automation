@@ -29,7 +29,7 @@ public class ProjectsPage extends FavoritesPage {
     }
 
     public void goToAgents() {
-        agentsLink.shouldBe(Condition.visible, Duration.ofSeconds(20));
+        agentsLink.shouldBe(Condition.visible, Duration.ofSeconds(60));
         agentsLink.click();
     }
 }
