@@ -11,7 +11,7 @@ public class SetupTest {
     @BeforeMethod
     public void setup() {
         Configuration.baseUrl = "http://" + Config.getProperty("hostAndPortForSetUp");
-        Configuration.remote = "http://http://localhost/:4444/wd/hub";
+        Configuration.remote = "http://localhost/:4444/wd/hub";
         Configuration.reportsFolder = "target/surefire-reports";
         Configuration.downloadsFolder ="target/downloads";
         BrowserSettings.setup(Config.getProperty("browserForSetUp")); // firefox by default - hardcoded in .ps1 script
