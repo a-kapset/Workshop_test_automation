@@ -16,15 +16,17 @@ jobs:
       - name: Install ifconfig
         run: sudo apt-get update && sudo apt-get install -y net-tools
 
-      - name: Setup host env variables
+      - name: Set host environment variable
         run: |
-          echo "HOST=$(ifconfig | grep -E "([0-9]{1,3}\.){3}[0-9]{1,3}" | grep -v 127.0.0.1 | awk '{ print $2 }' | cut -f2 -d: | head -n1)" >> $GITHUB_ENV
+          echo "HOST=$(ifconfig | grep -E "([0-9]{1,3}\.){3}[0-9]*" | grep -v 127.0.0.1 | awk '{ print $2 }' | cut -f2 -d: | head -n1)" >> $GITHUB_ENV
 
-      - name: Setup host config.properties
-        run: echo "host=$HOST:8111" >> src/main/resources/config.properties
+      - name: Create config directory and add browsers.json
+        run: |
+          mkdir -p config
+          cp infra/browsers.json config/
 
-      - name: Pull Selenoid Chrome/Firefox/...
-        run: docker pull selenoid/vnc_chrome:119.0
+      - name: Pull Selenoid Firefox/...
+        run: docker pull selenoid/vnc:firefox_89.0
 
       - name: Run Selenoid
         run: |
@@ -34,15 +36,17 @@ jobs:
           -p 4444:4444                                 \
           aerokube/selenoid
 
-#      # В этом степе нет смысла,
-#        так как через GitHub Actions нет доступа к Selenoid UI.
-#        Но зато это полезно при локальном запуске через act, для отладки
-#      - name: Run Selenoid UI
-#        run: |
-#          docker run -d --name selenoid-ui \
-#          -p 8080:8080                     \
-#          aerokube/selenoid-ui             \
-#          --selenoid-uri http://$HOST:4444
+      - name: Wait for Selenoid to be ready
+        run: |
+          echo "Waiting for Selenoid to be ready..."
+          for i in {1..30}; do
+            if curl --silent --fail http://localhost:4444/wd/hub/status; then
+              echo "Selenoid is ready!"
+              break
+            fi
+            echo "Waiting for Selenoid..."
+            sleep 1
+          done
 
       - name: Run TeamCity Server
         run: |
@@ -52,26 +56,40 @@ jobs:
           -p 8111:8111                                                        \
           jetbrains/teamcity-server:2023.11.1
 
-      - name: Setup TeamCity Server
+      - name: Clear and set config properties for server configuration
+        run: |
+          echo "" > src/main/resources/config.properties
+          echo "hostForSetUp=$HOST:8111" >> src/main/resources/config.properties
+          echo "browserForSetUp=firefox" >> src/main/resources/config.properties
+
+      - name: Make mvnw executable
+        run: chmod +x ./mvnw
+
+      - name: Configure TeamCity Server
         run: ./mvnw clean test -Dtest=SetupTest#startUpTest
 
-      - name: Set up superUserToken environment variable
-        # Берем из лога контейнера строку с последним упоминанием токена, из нее 6-е слово, что соответствует токену
+      - name: Set superUserToken environment variable
         run: echo "SUPER_USER_TOKEN=$(docker logs teamcity-server | grep 'Super user authentication token' | tail -n 1 | awk '{print $6}')" >> $GITHUB_ENV
-      - name: Set up superUserToken config property
-        run: echo "superUserToken=$SUPER_USER_TOKEN" >> src/main/resources/config.properties
 
-#      - name: Run TeamCity agent
-#        run: |
-#          docker run -e SERVER_URL=http://$HOST:8111 -u 0 -d --name teamcity-agent \
-#          -v $(pwd)/tmp/teamcity_agent/conf:/data/teamcity_agent/conf \
-#          jetbrains/teamcity-agent:2023.11.1
-#
-#      - name: Set up TeamCity agent
-#        # Авторизация агента при первом запуске, реализованная в виде теста
-#        # Не указываем clean, чтобы потом в итоговом репорте были и setup тесты
-#        run: ./mvnw test -Dtest=SetupTest#startUpTest
+      - name: Clear and set new config properties for tests
+        run: |
+          echo "" > src/main/resources/config.properties
+          echo "host=$HOST:8111" >> src/main/resources/config.properties
+          echo "superUserToken=$SUPER_USER_TOKEN" >> src/main/resources/config.properties
+          echo "browser=firefox" >> src/main/resources/config.properties
+          echo "remote=http://localhost:4444/wd/hub" >> src/main/resources/config.properties
+
+      - name: Run TeamCity Agent
+        run: |
+          docker run -u 0 -d -e SERVER_URL="http://$HOST:8111"                \
+          -v $(pwd)/tmp/teamcity_agent/conf:/data/teamcity_agent/conf \
+          jetbrains/teamcity-agent
+
+      - name: Wait for TeamCity Agent to start
+        run: sleep 100
+
+      - name: Authorize TeamCity Agent
+        run: ./mvnw clean test -Dtest=SetupTest#setAgent
 
       - name: Run tests
-        # Указываем группу, чтобы еще раз не запустить тесты, которые использовались для сетапа сервера и агента
-        run: ./mvnw test -Dgroups=Regression
+        run: ./mvnw test

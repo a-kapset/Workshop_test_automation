@@ -23,4 +23,14 @@ public class AuthRequest {
                 .extract()
                 .asString();
     }
+
+    public static void logoutAsSuperUser() {
+         RestAssured
+                .given()
+                .spec(Specifications.getSpec().superUserSpec())
+                .post("/ajax.html?logout=1")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.SC_OK);
+    }
 }

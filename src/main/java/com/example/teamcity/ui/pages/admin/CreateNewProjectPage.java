@@ -37,8 +37,9 @@ public class CreateNewProjectPage extends Page {
     }
 
     public CreateNewProjectPage createProjectByUrl(String url) {
-        createFromUrlButton.shouldBe(Condition.visible, Duration.ofSeconds(5)).click();
-        fromUrlFormBaseElement.shouldBe(Condition.visible, Duration.ofSeconds(6));
+        createFromUrlButton.shouldBe(Condition.visible, Duration.ofSeconds(30));
+        createFromUrlButton.click();
+        fromUrlFormBaseElement.shouldBe(Condition.visible, Duration.ofSeconds(30));
 
         createFromUrlForm.getUrlInput().sendKeys(url);
         submit();
@@ -62,7 +63,7 @@ public class CreateNewProjectPage extends Page {
     }
 
     public void setupUrlProject(String projectName, String buildTypeName) {
-        projectFormBaseElement.shouldBe(Condition.exist, Duration.ofSeconds(10));
+        projectFormBaseElement.shouldBe(Condition.exist, Duration.ofSeconds(30));
         projectFormBaseElement.shouldBe(Condition.visible, Duration.ofSeconds(10));
 
         createProjectForm.getProjectNameInput().shouldBe(Condition.visible, Duration.ofSeconds(5));
