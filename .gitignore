@@ -39,6 +39,7 @@ build/
 
 ### allure-results
 /allure-results
+.allure
 
 *.log
 /teamcity_tests_infrastructure
