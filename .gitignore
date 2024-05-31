@@ -43,3 +43,7 @@ build/
 
 *.log
 /teamcity_tests_infrastructure
+/swagger-coverage-output
+
+swagger-coverage-report.html
+swagger-coverage-report.json
